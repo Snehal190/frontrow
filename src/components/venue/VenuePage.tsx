@@ -261,6 +261,7 @@ export function VenuePage({ id }: { id: string }) {
                   · {show.artist.imageCredit.license}
                 </p>
               )}
+              <p className="mt-1 text-xs text-dim">Band: Microsoft Rocketbox avatars (MIT)</p>
             </div>
           </>
         )}

@@ -70,11 +70,9 @@ function build(count: number) {
     const mode = r < 0.32 ? MODE.wave : r < 0.58 ? MODE.pump : r < 0.72 && both ? MODE.clap : MODE.steady;
     const hand = (m: number) =>
       m === MODE.pump
-        ? [ARM.fist, ARM.fist2, ARM.horns, ARM.peace][Math.floor(rand() * 4)]
+        ? [ARM.fist, ARM.fist, ARM.horns, ARM.peace][Math.floor(rand() * 4)]
         : m === MODE.steady
-          ? rand() < 0.65
-            ? ARM.phone
-            : ARM.point
+          ? ARM.phone
           : rand() < 0.6
             ? ARM.open
             : ARM.palm;
@@ -128,6 +126,7 @@ const uniformTemplate = () => ({
   uLight: { value: 0.6 },
   uFogColor: { value: new Color("#0a0710") },
   uFogDensity: { value: 0.035 },
+  uNear: { value: 0 },
   uPersonRowV: { value: PERSON_ROW_V },
   uAtlas: { value: null as Texture | null },
   uReveal: { value: 0.2 },
@@ -161,6 +160,7 @@ export function Crowd({ count }: { count: number }) {
       u.uLight.value = rig.light + rig.spot * 0.25;
       u.uFogDensity.value = 0.026 + rig.haze * 0.018;
       u.uReveal.value = rig.phones;
+      u.uNear.value = 0;
       u.uPixelRatio.value = state.viewport.dpr;
     }
   });

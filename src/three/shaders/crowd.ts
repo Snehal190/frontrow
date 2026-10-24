@@ -10,7 +10,11 @@ uniform float uBeat;
 uniform float uEnergy;
 uniform float uPart;
 uniform vec3 uCam;
+uniform float uNear;    // people closer than this are covered by the photo plate
 attribute vec4 aData;   // x, z, scale, phase
+bool hiddenNear() {
+  return length(vec2(aData.x, aData.y) - uCam.xz) < uNear;
+}
 vec3 basePos() {
   vec3 b = vec3(aData.x, 0.0, aData.y);
   // Part around the camera so nobody stands inside it.
@@ -111,6 +115,7 @@ void main() {
   vUv = vec2((aLook.x + position.x + 0.5) / 8.0, 1.0 - (1.0 - position.y) * uPersonRowV);
   vTop = position.y;
   vShade = aLook.y;
+  if (hiddenNear()) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
   vZ = base.z;
   vec4 mv = viewMatrix * vec4(w, 1.0);
   vDepth = -mv.z;
@@ -147,6 +152,7 @@ void main() {
   vUv = vec2((aArm.x + position.x + 0.5) / 8.0, cellV * position.y);
   vTop = position.y;
   vShade = 1.0;
+  if (hiddenNear()) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
   vZ = base.z;
   vec4 mv = viewMatrix * vec4(w, 1.0);
   vDepth = -mv.z;

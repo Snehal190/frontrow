@@ -35,5 +35,5 @@ Always on in dev; in production add `?demo=1` to the URL once per session.
 ## Third-party assets
 
 - **Band on stage:** Female_Adult_03, Male_Adult_04, Male_Adult_09 and Male_Adult_20 from [Microsoft Rocketbox](https://github.com/microsoft/Microsoft-Rocketbox) (MIT, see `public/models/band/LICENSE.txt`). Textures downscaled to 1024px. Poses are procedural (`src/three/rigPose.ts`).
-- **Crowd:** drawn at runtime (`src/three/crowdAtlas.ts`), no assets.
+- **Crowd:** silhouettes drawn at runtime (`src/three/crowdAtlas.ts`), no assets.
 - **Artist photos (mock):** Wikimedia Commons, credited on each show page. Replace with Spotify images.
