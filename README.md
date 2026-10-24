@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FrontRow — "You're already at the show"
 
-## Getting Started
-
-First, run the development server:
+Frontend-only rebuild of the FrontRow indie-gig alert app. Everything runs on typed mock data behind `src/data/api.ts` (each function carries a `// BACKEND:` note for the endpoint it will call).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run lint
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Demo controls (pitch mode)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Always on in dev; in production add `?demo=1` to the URL once per session.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Key | Does |
+|---|---|
+| `` ` `` | Toggle the demo desk (tier + FPS readout, tier override) |
+| `N` | A crawler finds a new show (card drop, Telegram ping, beam flash) |
+| `E` | Featured show flips to EARLY BIRD LIVE |
+| `T` | Fake Telegram test alert |
+| `L` | Lights down — jump the venue page to the drop |
+| `S` | Toggle generated venue sound (off by default) |
+| `R` | Reset all mock state |
 
-## Learn More
+`?quality=low|medium|high` pins the render tier.
 
-To learn more about Next.js, take a look at the following resources:
+## Where things live
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/three/` — the persistent venue canvas. `Director.tsx` is the lighting desk (mode → energy, wash, phones, strobe), `CameraRig.tsx` the mode cameras and the venue walk-in path, `rig.ts` the shared per-frame state and the strobe limiter (≤3 flashes/s, ≤2 frames, ≤0.35 opacity).
+- `src/lib/` — `scroll.ts` (single Lenis + rAF loop), `beat.ts` (118 BPM clock), `quality.ts` (tiers + auto step-down), `venueMode.ts` (page → canvas store), `audio.ts` (Web Audio murmur/cheer/kick), `demo.ts`.
+- `src/data/` — `types.ts`, `api.ts` (the only import components use), `mock/`.
+- `scripts/gen-placeholders.mjs` — generates duotone SVG artist/merch placeholders into `public/mock/` before dev/build; drop real images with the same names to replace them.

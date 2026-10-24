@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+<defs>
+<radialGradient id="g" cx="59%" cy="38%" r="75%"><stop offset="0" stop-color="#e0569f"/><stop offset="0.55" stop-color="#2a0f3a"/><stop offset="1" stop-color="#07050b"/></radialGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="60"/></filter>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="800" height="800" fill="url(#g)"/>
+<g filter="url(#blur)"><circle cx="596" cy="27" r="353" fill="#ffffff" opacity="0.20"/><circle cx="61" cy="593" r="269" fill="#e0569f" opacity="0.25"/><circle cx="470" cy="249" r="228" fill="#e0569f" opacity="0.14"/><circle cx="448" cy="78" r="369" fill="#e0569f" opacity="0.12"/><circle cx="359" cy="791" r="160" fill="#ffffff" opacity="0.27"/></g>
+<polygon points="348.4975503664464,0 408.4975503664464,0 598.4975503664464,800 158.49755036644638,800" fill="url(#beam)" opacity="0.35"/>
+<g fill="#07050b" opacity="0.92">
+<circle cx="378.4975503664464" cy="420" r="46"/>
+<path d="M308.4975503664464 800 C 298.4975503664464 600, 318.4975503664464 500, 378.4975503664464 482 C 438.4975503664464 500, 458.4975503664464 600, 448.4975503664464 800 Z"/>
+<rect x="474.4975503664464" y="470" width="8" height="330"/><rect x="438.4975503664464" y="452" width="56" height="10" rx="5" transform="rotate(-24 466.4975503664464 457)"/>
+</g>
+<text x="40" y="760" font-family="Impact, 'Arial Black', sans-serif" font-size="300" font-weight="900" fill="#fff" opacity="0.12" letter-spacing="-8">SC</text>
+<text x="44" y="78" font-family="Menlo, monospace" font-size="22" letter-spacing="5" fill="#fff" opacity="0.55">SAANJH COLLECTIVE</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+<defs><radialGradient id="g" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#2a1838"/><stop offset="1" stop-color="#0d0812"/></radialGradient></defs>
+<rect width="800" height="800" fill="url(#g)"/>
+<ellipse cx="400" cy="700" rx="260" ry="26" fill="#000" opacity="0.5"/>
+<path d="M250 190 L330 150 Q400 190 470 150 L550 190 L620 290 L555 330 L540 300 L540 650 L260 650 L260 300 L245 330 L180 290 Z" fill="#2d0710" stroke="#ff4d5e" stroke-width="6"/>
+<text x="400" y="420" text-anchor="middle" font-family="Impact, 'Arial Black', sans-serif" font-size="110" fill="#ff4d5e">MM</text>
+<text x="400" y="470" text-anchor="middle" font-family="Menlo, monospace" font-size="18" letter-spacing="4" fill="#ff4d5e" opacity="0.8">INDIA TOUR</text>
+</svg>
