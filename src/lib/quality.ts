@@ -4,10 +4,11 @@ import { useSyncExternalStore } from "react";
 
 export type Tier = "high" | "medium" | "low";
 
+// Crowd members are billboards now (2 triangles each), so counts can be generous.
 export const TIER_SETTINGS: Record<Tier, { crowd: number; beams: number; bloom: boolean; dpr: number; haze: number }> = {
-  high: { crowd: 1400, beams: 10, bloom: true, dpr: 2, haze: 2 },
-  medium: { crowd: 850, beams: 8, bloom: true, dpr: 1.5, haze: 2 },
-  low: { crowd: 320, beams: 6, bloom: false, dpr: 1, haze: 1 },
+  high: { crowd: 2200, beams: 10, bloom: true, dpr: 2, haze: 2 },
+  medium: { crowd: 1500, beams: 8, bloom: true, dpr: 1.5, haze: 2 },
+  low: { crowd: 700, beams: 6, bloom: false, dpr: 1, haze: 1 },
 };
 
 const ORDER: Tier[] = ["low", "medium", "high"];

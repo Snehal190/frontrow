@@ -2,7 +2,7 @@
 // The one persistent canvas. Mounted once in the root layout, never torn
 // down; pages only change the scene mode, so route changes never flash.
 import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { TIER_SETTINGS, useTier } from "@/lib/quality";
 import { subscribeVenue, venue } from "@/lib/venueMode";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -75,7 +75,10 @@ export default function VenueCanvas() {
       dpr={[1, s.dpr]}
       gl={{ antialias: false, powerPreference: "high-performance", alpha: false, stencil: false }}
       camera={{ fov: 55, near: 0.1, far: 140, position: [0, 5.4, 28] }}
-      onCreated={({ gl }) => gl.setClearColor("#07050b")}
+      onCreated={({ gl, scene }) => {
+        gl.setClearColor("#07050b");
+        if (process.env.NODE_ENV !== "production") Object.assign((window as unknown as { __fr: object }).__fr, { scene, gl });
+      }}
     >
       <Director />
       <CameraRig />
@@ -85,7 +88,10 @@ export default function VenueCanvas() {
       <Crowd count={s.crowd} />
       <Haze sheets={s.haze} />
       <Lasers />
-      <Band />
+      {/* The band streams in after the room is up (models load in the background). */}
+      <Suspense fallback={null}>
+        <Band />
+      </Suspense>
       <Strobe />
       <Effects bloom={s.bloom} />
       <DemandDriver active={reduced && !hidden} />

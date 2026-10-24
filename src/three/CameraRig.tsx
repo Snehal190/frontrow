@@ -17,7 +17,7 @@ const RADAR = { pos: v(2.4, EYE, 13.5), look: v(-0.6, 6.8, -3) };
 const CALENDAR = { pos: v(-12.5, 1.4, 9.5), look: v(2, 3, -1) };
 const VENUE_REDUCED = { pos: v(0, EYE, 9), look: v(0, 3.4, -3) };
 
-const BACK = v(0, EYE, 21);
+const BACK = v(0, 1.95, 21); // up on your toes at the back, looking over the heads
 const BARRICADE = v(0, EYE, 2.3); // front row, hands on the barricade
 const LOOK_STAGE = v(0, 3.2, -3);
 const LOOK_BAND = v(0, 2.7, -3); // eyes on the singer once you're at the front
