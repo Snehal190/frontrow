@@ -25,9 +25,9 @@ export function Stage() {
     if (keyL.current && keyR.current) {
       keyL.current.color.copy(rig.wash);
       keyR.current.color.copy(rig.wash);
-      // Candela-ish values: the key lights wash the deck and the front rows.
-      keyL.current.intensity = 260 * l * (0.8 + rig.kick * 0.25 * rig.energy);
-      keyR.current.intensity = 260 * l * (0.8 + rig.kick * 0.25 * rig.energy);
+      // Candela-ish values: the key lights wash the band on the deck.
+      keyL.current.intensity = 220 * l * (0.85 + rig.kick * 0.12 * rig.energy);
+      keyR.current.intensity = 220 * l * (0.85 + rig.kick * 0.12 * rig.energy);
     }
     if (centre.current) centre.current.intensity = 900 * rig.spot;
     if (amb.current) amb.current.intensity = 0.08 + 0.25 * l;
@@ -90,9 +90,9 @@ export function Stage() {
         <meshStandardMaterial color="#1b1820" metalness={0.6} roughness={0.5} />
       </mesh>
 
-      <spotLight ref={keyL} position={[-7, TRUSS_Y, 1]} target-position={[-1, 0, 4]} angle={0.6} penumbra={0.8} distance={40} decay={1.6} />
-      <spotLight ref={keyR} position={[7, TRUSS_Y, 1]} target-position={[1, 0, 4]} angle={0.6} penumbra={0.8} distance={40} decay={1.6} />
-      <spotLight ref={centre} position={[0, TRUSS_Y, -1.5]} target-position={[0, 1.2, -2.5]} angle={0.22} penumbra={0.5} distance={30} decay={1.4} color="#fff6ee" intensity={0} />
+      <spotLight ref={keyL} position={[-7, TRUSS_Y, 2]} target-position={[-1.5, 1.6, -2.4]} angle={0.6} penumbra={0.8} distance={40} decay={1.6} />
+      <spotLight ref={keyR} position={[7, TRUSS_Y, 2]} target-position={[1.5, 1.6, -2.4]} angle={0.6} penumbra={0.8} distance={40} decay={1.6} />
+      <spotLight ref={centre} position={[0, TRUSS_Y, 0.5]} target-position={[0, 1.2, -1.6]} angle={0.22} penumbra={0.5} distance={30} decay={1.4} color="#fff6ee" intensity={0} />
     </group>
   );
 }

@@ -11,6 +11,7 @@ export interface VenueArtist {
   slug: string;
   name: string;
   image: string;
+  fallbackImage: string;
   hue: [string, string];
 }
 

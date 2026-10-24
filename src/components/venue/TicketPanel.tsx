@@ -6,7 +6,7 @@ import { STATUS_META } from "@/lib/status";
 import { StatusRibbon } from "../cards/parts";
 import { Countdown } from "../ui/Countdown";
 
-export function TierTable({ show, large }: { show: ShowWithArtist; large?: boolean }) {
+export function TierTable({ show, large, compact }: { show: ShowWithArtist; large?: boolean; compact?: boolean }) {
   if (!show.tiers.length)
     return <p className="text-sm text-dim">No tiers yet — this one&apos;s still a rumour. We&apos;ll ping you on Telegram the moment it&apos;s real.</p>;
   return (
@@ -17,7 +17,7 @@ export function TierTable({ show, large }: { show: ShowWithArtist; large?: boole
         return (
           <li
             key={t.name}
-            className={`flex items-center justify-between gap-3 ${large ? "py-4" : "rounded-lg px-3 py-2"} ${live && !large ? "beat-glow bg-white/[0.04]" : ""}`}
+            className={`items-center justify-between gap-3 ${compact && !live ? "hidden md:flex" : "flex"} ${large ? "py-4" : "rounded-lg px-3 py-2"} ${live && !large ? "beat-glow bg-white/[0.04]" : ""}`}
             style={live ? { ["--glow-rgb" as string]: STATUS_META[show.status === "early_bird" ? "early_bird" : "live"].rgb } : undefined}
           >
             <div className="min-w-0">
@@ -64,11 +64,12 @@ export function TicketActions({ show }: { show: ShowWithArtist }) {
 /** The HUD panel that slides in at the barricade. */
 export function TicketPanel({ show }: { show: ShowWithArtist }) {
   return (
-    <div className="panel grain w-[min(380px,calc(100vw-2rem))] overflow-hidden">
+    <div className="panel grain w-full overflow-hidden md:w-[380px]">
       <StatusRibbon status={show.status} />
       <div className="space-y-4 p-4">
         <p className="label text-dim">Tickets · {show.venue.split(",")[0]}</p>
-        <TierTable show={show} />
+        {/* On phones only the on-sale tier shows here; the full table is just below the venue. */}
+        <TierTable show={show} compact />
         <TicketActions show={show} />
       </div>
     </div>

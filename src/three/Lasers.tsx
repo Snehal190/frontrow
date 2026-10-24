@@ -30,8 +30,8 @@ export function Lasers() {
       const k = i / (COUNT - 1) - 0.5;
       r.rotation.set(-1.2 - 0.15 * Math.sin(rig.bar + i), 0, k * fan * 2.2);
     });
-    laserMat.opacity = vis * (0.55 + 0.45 * rig.kick);
-    laserMat.color.copy(tmp.set("#ffffff").lerp(rig.wash, 0.5)).multiplyScalar(2.5);
+    laserMat.opacity = vis * (0.3 + 0.2 * rig.kick);
+    laserMat.color.copy(tmp.set("#ffffff").lerp(rig.wash, 0.8)).multiplyScalar(1.6);
   });
 
   return (
@@ -39,7 +39,7 @@ export function Lasers() {
       {Array.from({ length: COUNT }, (_, i) => (
         <group key={i} ref={(el) => void (rods.current[i] = el)}>
           <mesh position={[0, -LEN / 2, 0]} material={laserMat}>
-            <cylinderGeometry args={[0.012, 0.03, LEN, 4, 1, true]} />
+            <cylinderGeometry args={[0.005, 0.014, LEN, 4, 1, true]} />
           </mesh>
         </group>
       ))}

@@ -11,9 +11,6 @@ import { rig } from "./rig";
 const EYE = 1.65;
 const v = (x: number, y: number, z: number) => new Vector3(x, y, z);
 
-// Merch booth sits stage-left in the room; the camera turns to face it.
-export const BOOTH_POS = v(-9.5, 0, 4.2);
-
 const LOBBY_FROM = { pos: v(0, 5.4, 28), look: v(0, 3, 0) };
 const LOBBY_TO = { pos: v(0, 2.6, 15.5), look: v(0, 3.2, -2) }; // 40% of the walk
 const RADAR = { pos: v(2.4, EYE, 13.5), look: v(-0.6, 6.8, -3) };
@@ -21,29 +18,26 @@ const CALENDAR = { pos: v(-12.5, 1.4, 9.5), look: v(2, 3, -1) };
 const VENUE_REDUCED = { pos: v(0, EYE, 9), look: v(0, 3.4, -3) };
 
 const BACK = v(0, EYE, 21);
-const BARRICADE = v(0, EYE, 3.1);
-const TURNED = v(-1.4, EYE, 4.4);
-const LOOK_STAGE = v(0, 3.4, -3);
-const LOOK_UP = v(0, 4.4, -3);
-const LOOK_BOOTH = v(BOOTH_POS.x, 1.8, BOOTH_POS.z);
+const BARRICADE = v(0, EYE, 2.3); // front row, hands on the barricade
+const LOOK_STAGE = v(0, 3.2, -3);
+const LOOK_BAND = v(0, 2.7, -3); // eyes on the singer once you're at the front
 
+// Back of the room (0–0.12) → walk through the crowd (0.12–0.5) → the
+// barricade, where the tickets are (0.5–1). The walk ends where the user's
+// decision is; nothing lives past it.
 function venuePose(p: number, outPos: Vector3, outLook: Vector3) {
-  if (p < 0.15) {
+  if (p < 0.12) {
     outPos.copy(BACK);
     outLook.copy(LOOK_STAGE);
-  } else if (p < 0.45) {
-    const t = easeInOutCubic(range(p, 0.15, 0.45));
+  } else if (p < 0.5) {
+    const t = easeInOutCubic(range(p, 0.12, 0.5));
     outPos.lerpVectors(BACK, BARRICADE, t);
     // Weave a little through the gaps in the crowd.
-    outPos.x = Math.sin(t * Math.PI * 2) * 0.35;
-    outLook.copy(LOOK_STAGE);
-  } else if (p < 0.7) {
-    outPos.copy(BARRICADE);
-    outLook.lerpVectors(LOOK_STAGE, LOOK_UP, range(p, 0.45, 0.55));
+    outPos.x = Math.sin(t * Math.PI * 2) * 0.3;
+    outLook.lerpVectors(LOOK_STAGE, LOOK_BAND, t);
   } else {
-    const t = easeInOutCubic(range(p, 0.7, 0.86));
-    outPos.lerpVectors(BARRICADE, TURNED, t);
-    outLook.lerpVectors(LOOK_UP, LOOK_BOOTH, t);
+    outPos.copy(BARRICADE);
+    outLook.copy(LOOK_BAND);
   }
 }
 
@@ -81,7 +75,8 @@ export function CameraRig() {
     }
 
     // 1.2s cross-fade after a mode change; then tighter tracking for scroll.
-    const lambda = now - s.changedAt < 1.4 ? 2.6 : mode === "venue" ? 5 : 2.6;
+    // λ 3.2 in venue: glides after the scroll instead of snapping to it.
+    const lambda = now - s.changedAt < 1.4 ? 2.6 : mode === "venue" ? 3.2 : 2.6;
     const k = Math.min(dt, 0.1);
     if (reduced) {
       s.pos.copy(s.tPos);
@@ -92,12 +87,12 @@ export function CameraRig() {
     }
 
     camera.position.copy(s.pos);
-    if (!reduced) camera.position.y += rig.kick * 0.012 * rig.energy;
+    if (!reduced) camera.position.y += rig.kick * 0.004 * rig.energy;
     camera.lookAt(s.look);
     if (!reduced) {
-      // Handheld: two low-frequency noises, ±0.015 rad.
-      camera.rotateY(noise1(now * 0.23, 1) * 0.015);
-      camera.rotateX(noise1(now * 0.31, 7) * 0.015);
+      // Handheld: two slow noises, ±0.007 rad — felt, not seen.
+      camera.rotateY(noise1(now * 0.18, 1) * 0.007);
+      camera.rotateX(noise1(now * 0.24, 7) * 0.007);
     }
     // Portrait screens need a wider lens to keep the stage in frame.
     const fov = lerp(72, 55, range(size.width / size.height, 0.6, 1.3));

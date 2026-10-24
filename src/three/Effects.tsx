@@ -55,7 +55,7 @@ export function Effects({ bloom }: { bloom: boolean }) {
   }, [size.width, size.height, dpr, bloom]);
 
   useFrame(() => {
-    if (bloomRef.current) bloomRef.current.intensity = 0.55 + rig.energy * 1.1 + rig.beamFlash * 0.6;
+    if (bloomRef.current) bloomRef.current.intensity = 0.45 + rig.energy * 0.65 + rig.beamFlash * 0.4;
     if (chromaRef.current) chromaRef.current.offset.set(rig.chroma, rig.chroma * 0.6);
   });
 
@@ -69,7 +69,7 @@ export function Effects({ bloom }: { bloom: boolean }) {
 
   return (
     <EffectComposer ref={composer} multisampling={0}>
-      <Bloom ref={bloomRef} mipmapBlur luminanceThreshold={0.6} luminanceSmoothing={0.2} intensity={0.8} radius={0.75} />
+      <Bloom ref={bloomRef} mipmapBlur luminanceThreshold={0.65} luminanceSmoothing={0.25} intensity={0.8} radius={0.75} />
       <ChromaticAberration ref={chromaRef} offset={offset} radialModulation={false} modulationOffset={0} />
       <Vignette offset={0.25} darkness={0.45} />
       <Noise opacity={0.06} premultiply blendFunction={BlendFunction.SCREEN} />

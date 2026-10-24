@@ -22,12 +22,15 @@ uniform float uKick;
 uniform float uBright;
 uniform vec2 uGrid;
 uniform float uAspect;
+uniform float uTexAspect;
 varying vec2 vUv;
 ${NOISE}
 void main() {
-  // Cover-fit a square image onto the wide wall.
+  // Cover-fit the photo (any aspect) onto the wide wall, biased up toward faces.
   vec2 uv = vUv;
-  vec2 tuv = vec2(0.5 + (uv.x - 0.5) * uAspect * 0.62, 0.5 + (uv.y - 0.5) * 0.9 + 0.04);
+  vec2 tuv = uv;
+  if (uAspect > uTexAspect) tuv.y = 0.58 + (uv.y - 0.5) * uTexAspect / uAspect;
+  else tuv.x = 0.5 + (uv.x - 0.5) * uAspect / uTexAspect;
   vec3 tex = texture2D(uTex, clamp(tuv, 0.0, 1.0)).rgb;
   float lum = dot(tex, vec3(0.299, 0.587, 0.114));
   vec3 duo = mix(uDark, uWash * 1.6 + 0.15, smoothstep(0.05, 0.85, lum));

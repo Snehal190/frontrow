@@ -5,9 +5,9 @@ import { useSyncExternalStore } from "react";
 export type Tier = "high" | "medium" | "low";
 
 export const TIER_SETTINGS: Record<Tier, { crowd: number; beams: number; bloom: boolean; dpr: number; haze: number }> = {
-  high: { crowd: 1800, beams: 10, bloom: true, dpr: 2, haze: 2 },
-  medium: { crowd: 900, beams: 8, bloom: true, dpr: 1.5, haze: 2 },
-  low: { crowd: 350, beams: 6, bloom: false, dpr: 1, haze: 1 },
+  high: { crowd: 1400, beams: 10, bloom: true, dpr: 2, haze: 2 },
+  medium: { crowd: 850, beams: 8, bloom: true, dpr: 1.5, haze: 2 },
+  low: { crowd: 320, beams: 6, bloom: false, dpr: 1, haze: 1 },
 };
 
 const ORDER: Tier[] = ["low", "medium", "high"];

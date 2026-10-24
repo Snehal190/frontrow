@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import type { ShowWithArtist } from "@/data/api";
 import { STATUS_META } from "@/lib/status";
+import { ArtistImg } from "../ui/ArtistImg";
 
 const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const key = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
@@ -12,8 +13,7 @@ function MiniCard({ show }: { show: ShowWithArtist }) {
   const m = STATUS_META[show.status];
   return (
     <Link href={`/show/${show.id}`} className="flex items-center gap-3 rounded-lg p-2 hover:bg-white/5">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={show.artist.image} alt="" className="h-10 w-10 rounded-md object-cover" />
+      <ArtistImg artist={show.artist} className="h-10 w-10 rounded-md object-cover" />
       <span className="min-w-0">
         <span className="block truncate font-semibold text-white">{show.artist.name}</span>
         <span className="label block truncate !text-[0.6rem]" style={{ color: m.color }}>

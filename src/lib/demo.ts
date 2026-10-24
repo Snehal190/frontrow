@@ -52,9 +52,9 @@ export function demoLightsDown() {
   if (venue.mode === "venue") {
     const el = document.querySelector("[data-venue-pin]") as HTMLElement | null;
     if (el) {
-      // p = 0.5 is the drop; jump there.
+      // p ≈ 0.52 is the drop at the barricade; glide there.
       const top = el.getBoundingClientRect().top + window.scrollY;
-      scrollTo(top + (el.offsetHeight - window.innerHeight) * 0.52, { duration: 1.2 });
+      scrollTo(top + (el.offsetHeight - window.innerHeight) * 0.56, { duration: 1.6 });
     }
   }
   triggerDrop();
@@ -66,9 +66,6 @@ export function demoSound() {
 
 export function demoReset() {
   resetAll();
-  try {
-    localStorage.removeItem("frontrow.bag.v1");
-  } catch {}
   window.dispatchEvent(new Event("frontrow:reset"));
   toast("Demo state reset");
 }

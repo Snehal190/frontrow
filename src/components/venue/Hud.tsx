@@ -8,8 +8,8 @@ function Corner({ pos, children }: { pos: "tl" | "tr" | "bl" | "br"; children: R
   const place = {
     tl: "top-20 left-4 sm:left-6 items-start text-left",
     tr: "top-20 right-4 sm:right-6 items-end text-right",
-    bl: "bottom-24 left-4 sm:left-6 md:bottom-6 items-start text-left",
-    br: "bottom-24 right-4 sm:right-6 md:bottom-6 items-end text-right",
+    bl: "bottom-6 left-6 hidden md:flex items-start text-left",
+    br: "bottom-6 right-6 hidden md:flex items-end text-right",
   }[pos];
   const bracket = {
     tl: "border-t border-l -top-2 -left-2",

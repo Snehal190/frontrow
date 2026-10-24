@@ -75,7 +75,7 @@ export function MyShows() {
           <div className="grid gap-8 md:grid-cols-2">
             {list.map((s, i) => (
               <motion.div key={s.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
-                <TicketStub show={s} past={tab === "past"} />
+                <TicketStub show={s} past={tab === "past"} index={i} />
               </motion.div>
             ))}
           </div>

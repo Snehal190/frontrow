@@ -60,11 +60,11 @@ export function Beams({ count }: { count: number }) {
         const f = Math.sin(Math.min(1, flash * 1.2) * Math.PI);
         rz *= 1 - f;
         rx = rx * (1 - f) - 0.55 * f;
-        boost = flash * 1.6;
+        boost = flash * 1.1;
       }
       g.rotation.set(rx, 0, rz);
       m.uniforms.uColor.value.copy(rig.wash);
-      m.uniforms.uIntensity.value = 0.75 * rig.light * (0.6 + rig.energy) * (1 + rig.kick * rig.energy * 0.35) + boost;
+      m.uniforms.uIntensity.value = 0.55 * rig.light * (0.6 + rig.energy) * (1 + rig.kick * rig.energy * 0.15) + boost;
       m.uniforms.uTime.value = t;
     });
     if (spotMat.current) {

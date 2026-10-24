@@ -1,7 +1,8 @@
 "use client";
-// ENTER THE VENUE. A 420svh pinned section drives the 3D camera from the back
-// of the room to the barricade (the drop) and round to the merch stall; the
-// DOM HUD, title and ticket panel are choreographed off the same progress.
+// ENTER THE VENUE. A 320svh pinned section drives the 3D camera from the back
+// of the room through the crowd to the barricade, where the band drops and the
+// tickets slide in and stay. The DOM HUD, title and ticket panel are
+// choreographed off the same progress.
 import Link from "next/link";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -14,7 +15,6 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { finishEnter, popWash, pushWash, setArtist, startEnter, useSceneMode, venue } from "@/lib/venueMode";
 import { rig } from "@/three/rig";
 import { ShowCard } from "../cards/ShowCard";
-import { MerchGrid } from "../merch/MerchGrid";
 import { Rail } from "../radar/Rail";
 import { useData } from "../useData";
 import { EnterTransition } from "./EnterTransition";
@@ -37,8 +37,8 @@ function SlamName({ name, animate }: { name: string; animate: boolean }) {
                 className="inline-block"
                 initial={animate ? { y: "-115%", opacity: 0 } : false}
                 animate={{ y: "0%", opacity: 1 }}
-                // Stiff spring = a slam with a tiny overshoot, letters staggered 35ms.
-                transition={{ type: "spring", stiffness: 520, damping: 17, mass: 0.8, delay: k * 0.035 }}
+                // Firm spring with a barely-there overshoot, letters staggered 40ms.
+                transition={{ type: "spring", stiffness: 300, damping: 24, mass: 0.9, delay: k * 0.04 }}
               >
                 {ch}
               </motion.span>
@@ -83,7 +83,6 @@ export function VenuePage({ id }: { id: string }) {
   const hud = useRef<HTMLDivElement>(null);
   const meter = useRef<HTMLDivElement | null>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const merchCap = useRef<HTMLDivElement>(null);
 
   // The enter sequence: house lights down, phones on, spot hits, name slams.
   useEffect(() => {
@@ -100,12 +99,12 @@ export function VenuePage({ id }: { id: string }) {
     return () => clearTimeout(t);
   }, [id]);
 
-  // Hand the venue this artist (LED wall, merch booth) and the status wash.
+  // Hand the venue this artist (LED wall) and the status wash.
   const slug = show?.artist.slug;
   const status = show?.status;
   useEffect(() => {
     if (!show) return;
-    setArtist({ slug: show.artist.slug, name: show.artist.name, image: show.artist.image, hue: show.artist.hue });
+    setArtist({ slug: show.artist.slug, name: show.artist.name, image: show.artist.image, fallbackImage: show.artist.fallbackImage, hue: show.artist.hue });
     pushWash("show", show.status);
     return () => {
       popWash("show");
@@ -134,11 +133,11 @@ export function VenuePage({ id }: { id: string }) {
       venue.progress = p;
       const ui = phaseRef.current === "show";
       if (title.current) {
-        const out = isReduced ? 0 : range(p, 0.36, 0.46);
+        const out = isReduced ? 0 : range(p, 0.3, 0.42);
         title.current.style.opacity = String(ui ? 1 - out : 0);
         title.current.style.transform = `translateY(${-out * 60}px)`;
       }
-      if (hud.current) hud.current.style.opacity = String(ui ? 1 - range(p, 0.88, 0.97) : 0);
+      if (hud.current) hud.current.style.opacity = String(ui ? 1 : 0);
       if (meter.current) {
         const lit = Math.round(rig.energy * 12);
         if (lit !== lastLit) {
@@ -152,17 +151,12 @@ export function VenuePage({ id }: { id: string }) {
       const cue = hud.current?.querySelector<HTMLElement>("[data-scroll-cue]");
       if (cue) cue.style.opacity = String(1 - range(p, 0.02, 0.08));
       if (panel.current) {
-        // Slides in at the barricade (0.45), out as the camera turns to the stall (0.72).
-        const t = isReduced ? 1 : range(p, 0.45, 0.52) * (1 - range(p, 0.7, 0.76));
+        // Slides in as you reach the barricade and stays: this is where the walk ends.
+        const t = isReduced ? 1 : range(p, 0.46, 0.56);
         panel.current.style.opacity = String(ui ? t : 0);
         panel.current.style.transform = `translateX(${(1 - t) * 110}%)`;
         panel.current.style.pointerEvents = t > 0.5 && ui ? "auto" : "none";
         panel.current.inert = !(t > 0.5 && ui);
-      }
-      if (merchCap.current) {
-        const t = isReduced ? 0 : range(p, 0.74, 0.8) * (1 - range(p, 0.88, 0.93));
-        merchCap.current.style.opacity = String(t);
-        merchCap.current.style.transform = `translateY(${(1 - t) * 20}px)`;
       }
     });
   }, []);
@@ -184,12 +178,12 @@ export function VenuePage({ id }: { id: string }) {
         </button>
       )}
 
-      <section ref={pin} data-venue-pin className="relative" style={{ height: reduced ? "100svh" : "420svh" }} aria-label="The show">
+      <section ref={pin} data-venue-pin className="relative" style={{ height: reduced ? "100svh" : "320svh" }} aria-label="The show">
         <div className="sticky top-0 h-svh overflow-hidden">
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-house/85 via-house/30 to-transparent" />
           {show && (
             <>
-              <div ref={title} className="absolute inset-x-0 bottom-[16%] px-4 opacity-0 sm:px-8 md:bottom-[12%]">
+              <div ref={title} className="absolute inset-x-0 bottom-[27%] px-4 opacity-0 sm:px-8 md:bottom-[14%]">
                 <div className="mx-auto max-w-7xl">
                   <p className="label mb-3 text-lilac">
                     {show.title ? `${show.title} · ` : ""}Live in {show.city} · {d?.long}
@@ -198,13 +192,8 @@ export function VenuePage({ id }: { id: string }) {
                 </div>
               </div>
               <Hud ref={hud} show={show} meterRef={(el) => void (meter.current = el)} reduced={reduced} />
-              <div ref={panel} className="absolute top-24 right-4 opacity-0 sm:right-6 md:top-1/2 md:-translate-y-1/2" style={{ transform: "translateX(110%)" }}>
+              <div ref={panel} className="absolute inset-x-3 bottom-20 max-h-[62svh] overflow-y-auto opacity-0 md:inset-x-auto md:right-6 md:bottom-auto md:top-1/2 md:max-h-none md:-translate-y-1/2 md:overflow-visible" style={{ transform: "translateX(110%)" }}>
                 <TicketPanel show={show} />
-              </div>
-              <div ref={merchCap} className="absolute bottom-[18%] left-4 max-w-sm opacity-0 sm:left-8">
-                <p className="label text-early">Merch stall · stage left</p>
-                <p className="display mt-2 text-5xl text-white">Take the night home</p>
-                <p className="mt-2 text-smoke">Tees, totes, posters and a limited vinyl press. Pick up at the stall or ship it.</p>
               </div>
             </>
           )}
@@ -245,10 +234,6 @@ export function VenuePage({ id }: { id: string }) {
               </div>
             </Section>
 
-            <Section id="merch-h" title="Merch" kicker={`Official · ${show.artist.name}`}>
-              <MerchGrid artistSlug={show.artistSlug} />
-            </Section>
-
             {nearby.length > 0 && (
               <Section id="near-h" title="Also playing near you" kicker="Similar artists">
                 <Rail label="Also playing near you">
@@ -267,6 +252,15 @@ export function VenuePage({ id }: { id: string }) {
                   {show.artist.followed ? ", and you follow them." : "."}
                 </span>
               </p>
+              {show.artist.imageCredit && (
+                <p className="mt-2 text-xs text-dim">
+                  Stand-in photo:{" "}
+                  <a href={show.artist.imageCredit.url} target="_blank" rel="noreferrer" className="underline hover:text-smoke">
+                    {show.artist.imageCredit.author} / Wikimedia Commons
+                  </a>{" "}
+                  · {show.artist.imageCredit.license}
+                </p>
+              )}
             </div>
           </>
         )}

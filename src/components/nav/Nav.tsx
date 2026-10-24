@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { useBag } from "../merch/bag";
 
 const LINKS = [
   { href: "/radar", label: "Radar", icon: "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0-10 0M12 12l6-6" },
@@ -22,7 +21,6 @@ export function Wordmark({ className = "" }: { className?: string }) {
 
 export function Nav() {
   const path = usePathname();
-  const bag = useBag();
   if (path === "/") return null;
   const minimal = path.startsWith("/onboarding");
   const active = (href: string) => path === href || (href === "/profile" && path === "/connections");
@@ -59,17 +57,6 @@ export function Nav() {
                 ))}
               </ul>
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => bag.setOpen(true)}
-                  className="label relative flex h-10 items-center gap-2 rounded-full px-3 text-smoke ring-1 ring-white/10 hover:bg-white/5"
-                  aria-label={`Open bag, ${bag.count} items`}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                    <path d="M5 8h14l-1 12H6z M9 8V6a3 3 0 0 1 6 0v2" />
-                  </svg>
-                  <span>{bag.count}</span>
-                </button>
                 <Link
                   href="/profile"
                   aria-label="Your profile"

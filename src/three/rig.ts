@@ -40,7 +40,7 @@ export const rig = {
 };
 
 // --- Strobe limiter --------------------------------------------------------
-// Hard limits: each flash ≤ 2 frames (~33ms), opacity ≤ 0.35, never more than
+// Hard limits: each flash ≤ 2 frames (~33ms), opacity ≤ 0.35 (we use 0.18), never more than
 // 3 flashes inside any rolling 1-second window.
 const FLASH_MS = 33;
 const MAX_PER_SEC = 3;
@@ -60,5 +60,5 @@ export function updateStrobe(now: number) {
     if (flashStarts.length < MAX_PER_SEC && (!flashStarts.length || now - flashStarts.at(-1)! > 120)) flashStarts.push(now);
   }
   const lastFlash = flashStarts.at(-1);
-  rig.strobe = lastFlash !== undefined && now - lastFlash < FLASH_MS ? 0.35 : 0;
+  rig.strobe = lastFlash !== undefined && now - lastFlash < FLASH_MS ? 0.18 : 0;
 }

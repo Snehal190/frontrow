@@ -11,6 +11,10 @@ export interface Artist {
   followed: boolean;
   /** Duotone pair used by placeholders, the LED wall and ticket stubs. */
   hue: [string, string];
+  /** Offline fallback when the remote photo can't load. */
+  fallbackImage: string;
+  /** Attribution for the photo (mock photos are Wikimedia Commons, mostly CC BY-SA). */
+  imageCredit?: { author: string; license: string; url: string };
 }
 
 export interface TicketTier {

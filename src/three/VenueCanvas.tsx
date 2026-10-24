@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { TIER_SETTINGS, useTier } from "@/lib/quality";
 import { subscribeVenue, venue } from "@/lib/venueMode";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { Band } from "./Band";
 import { Beams } from "./Beams";
 import { CameraRig } from "./CameraRig";
 import { Crowd } from "./Crowd";
@@ -14,7 +15,6 @@ import { Effects, Strobe } from "./Effects";
 import { Haze } from "./Haze";
 import { Lasers } from "./Lasers";
 import { LedWall } from "./LedWall";
-import { MerchBooth } from "./MerchBooth";
 import { Stage } from "./Stage";
 import { rig } from "./rig";
 
@@ -85,7 +85,7 @@ export default function VenueCanvas() {
       <Crowd count={s.crowd} />
       <Haze sheets={s.haze} />
       <Lasers />
-      <MerchBooth />
+      <Band />
       <Strobe />
       <Effects bloom={s.bloom} />
       <DemandDriver active={reduced && !hidden} />

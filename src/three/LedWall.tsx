@@ -25,6 +25,7 @@ export function LedWall() {
       // 1 LED tile ≈ 8cm: 160×76 cells across the wall.
       uGrid: { value: [160, 76] },
       uAspect: { value: W / H },
+      uTexAspect: { value: 1 },
     }),
     [],
   );
@@ -45,13 +46,17 @@ export function LedWall() {
         return;
       }
       m.uniforms.uDark.value.set(a.hue[1]).multiplyScalar(0.5);
-      loader.load(src, (tex) => {
+      const apply = (tex: Texture) => {
         if (current !== src || !mat.current) return;
         tex.colorSpace = SRGBColorSpace;
+        const img = tex.image as { width?: number; height?: number } | undefined;
+        mat.current.uniforms.uTexAspect.value = img?.width && img.height ? img.width / img.height : 1;
         mat.current.uniforms.uTex.value = tex;
         mat.current.uniforms.uHasTex.value = 1;
         invalidate();
-      });
+      };
+      // Remote photo first; the local placeholder if the network fails.
+      loader.load(src, apply, undefined, () => loader.load(a.fallbackImage, apply));
     };
     sync();
     return subscribeVenue(sync);
@@ -61,7 +66,7 @@ export function LedWall() {
     const m = mat.current;
     if (!m) return;
     m.uniforms.uTime.value = state.clock.elapsedTime;
-    m.uniforms.uKick.value = rig.kick * (0.3 + rig.energy);
+    m.uniforms.uKick.value = rig.kick * (0.15 + rig.energy * 0.35);
     m.uniforms.uArtist.value = rig.ledArtist;
     m.uniforms.uWash.value.copy(rig.wash);
     m.uniforms.uBright.value = 0.35 + rig.light * 0.9 + rig.beamFlash * 0.4;

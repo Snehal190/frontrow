@@ -10,6 +10,7 @@ import { Countdown } from "../ui/Countdown";
 import { setPendingEnter } from "./enterStore";
 import { FlipCard } from "./FlipCard";
 import { DateTile, FoundList, Sources, StatusRibbon, TravelLine } from "./parts";
+import { ArtistImg } from "../ui/ArtistImg";
 
 export type CardVariant = "grid" | "featured" | "rail" | "early";
 
@@ -21,9 +22,9 @@ const FLAG_TOAST: Partial<Record<keyof ShowUserFlags, [string, string]>> = {
 
 export function useEnterShow(show: ShowWithArtist) {
   const router = useRouter();
-  return (img: HTMLElement | null) => {
+  return (img: HTMLImageElement | null) => {
     const r = img?.getBoundingClientRect();
-    if (r) setPendingEnter({ showId: show.id, src: show.artist.image, rect: { x: r.left, y: r.top, w: r.width, h: r.height }, at: performance.now() });
+    if (r) setPendingEnter({ showId: show.id, src: img?.currentSrc || show.artist.image, rect: { x: r.left, y: r.top, w: r.width, h: r.height }, at: performance.now() });
     router.push(`/show/${show.id}`);
   };
 }
@@ -163,15 +164,13 @@ export function ShowCard({ show, variant = "grid", fresh = false }: { show: Show
       <div className={`flex flex-1 ${featured ? "flex-col sm:flex-row" : "flex-col"}`}>
         {rail && (
           <div className="relative h-36 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img ref={img} src={show.artist.image} alt="" className="absolute inset-0 h-full w-full scale-125 object-cover" loading="lazy" />
+            <ArtistImg ref={img} artist={show.artist} className="absolute inset-0 h-full w-full scale-125 object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-haze to-transparent" />
           </div>
         )}
         {featured && (
           <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto sm:w-[44%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img ref={img} src={show.artist.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <ArtistImg ref={img} artist={show.artist} className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-haze via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:via-transparent sm:to-haze/80" />
           </div>
         )}
@@ -200,8 +199,7 @@ export function ShowCard({ show, variant = "grid", fresh = false }: { show: Show
             </div>
             {!featured && !rail && (
               <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img ref={img} src={show.artist.image} alt="" className="h-full w-full object-cover" loading="lazy" />
+                <ArtistImg ref={img} artist={show.artist} className="h-full w-full object-cover" loading="lazy" />
               </div>
             )}
           </div>

@@ -7,6 +7,7 @@ import { useSceneMode } from "@/lib/venueMode";
 import { CrawlerReveal } from "../radar/CrawlerReveal";
 import { CountUp } from "../ui/CountUp";
 import { TelegramBubble } from "../ui/TelegramToast";
+import { ArtistImg } from "../ui/ArtistImg";
 
 const STEPS = ["Spotify", "Telegram", "Calendar"] as const;
 
@@ -108,8 +109,7 @@ function SpotifyStep({ onDone }: { onDone: () => void }) {
                 }
                 className={`flex items-center gap-2 rounded-full py-1.5 pr-4 pl-1.5 text-sm font-semibold ring-1 transition ${on ? "bg-white/10 text-white ring-white/20" : "text-dim line-through ring-white/10"}`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.image} alt="" className={`h-7 w-7 rounded-full object-cover ${on ? "" : "opacity-40 grayscale"}`} />
+                <ArtistImg artist={a} className={`h-7 w-7 rounded-full object-cover ${on ? "" : "opacity-40 grayscale"}`} />
                 {a.name}
               </button>
             </motion.li>

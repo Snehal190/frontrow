@@ -3,8 +3,6 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, type ReactNode } from "react";
 import { soundPreferred, setSound } from "@/lib/audio";
 import { scrollTo, startScroll, stopScroll } from "@/lib/scroll";
-import { BagProvider } from "./merch/bag";
-import { BagDrawer } from "./merch/BagDrawer";
 import { Nav } from "./nav/Nav";
 import { DemoPanel } from "./ui/DemoPanel";
 import { SoundToggle } from "./ui/SoundToggle";
@@ -36,7 +34,7 @@ function ScrollBoot() {
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <BagProvider>
+    <>
       {/* usePathname() consumers stream in, so routes can still prerender. */}
       <Suspense fallback={null}>
         <ScrollBoot />
@@ -47,10 +45,9 @@ export function Providers({ children }: { children: ReactNode }) {
       </Suspense>
       <main className="relative z-10">{children}</main>
       <SoundToggle />
-      <BagDrawer />
       <ToastLayer />
       <TelegramToastLayer />
       <DemoPanel />
-    </BagProvider>
+    </>
   );
 }

@@ -50,10 +50,10 @@ function loop(t: number) {
 export function startScroll(opts: { reducedMotion: boolean }) {
   if (lenis) return lenis;
   lenis = new Lenis({
-    // 0.1 lerp: smooth but still "attached" to the wheel; reduced motion gets native scroll.
-    lerp: opts.reducedMotion ? 1 : 0.1,
+    // 0.075 lerp: glides rather than jerks; reduced motion gets native scroll.
+    lerp: opts.reducedMotion ? 1 : 0.075,
     smoothWheel: !opts.reducedMotion,
-    wheelMultiplier: 0.9,
+    wheelMultiplier: 0.8,
   });
   lenis.on("scroll", (l: Lenis) => {
     scrollState.y = l.scroll;
